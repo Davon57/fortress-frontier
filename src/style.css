@@ -1,0 +1,24 @@
+:root {
+  color: #4c321e;
+  background: #2c2118;
+  font-family: Arial, "Microsoft YaHei", sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 1120px; min-height: 100vh; display: grid; place-items: center; background: radial-gradient(circle at 50% 18%, #725638, #2c2118 65%); }
+#app { width: 1100px; margin-top: 30px; border: 7px solid #513b28; box-shadow: 0 0 0 2px #c29d66, 0 22px 65px #000b; }
+canvas { display: block; width: 1100px; height: 620px; }
+.command-deck { width: 1100px; margin-bottom: 28px; padding: 13px 15px 16px; background: linear-gradient(90deg, #ddc294, #b9905d); border: 2px solid #513b28; border-top: 0; }
+.deck-title { margin-bottom: 10px; font-weight: 700; letter-spacing: .08em; color: #4c321e; }
+.deck-title span { margin-left: 14px; color: #765538; font-size: 12px; font-weight: 400; letter-spacing: 0; }
+.deck-row { display: flex; gap: 7px; flex-wrap: wrap; }
+button { appearance: none; padding: 9px 15px; border: 1px solid #543b27; border-radius: 3px; background: #765238; color: #fff0ce; cursor: pointer; font: 600 13px Arial, "Microsoft YaHei", sans-serif; transition: .12s ease; }
+button:hover, button.active { border-color: #fff0b8; background: #92633c; }
+button b { margin-left: 4px; color: #ffe19a; }
+button.ability { border-color: #8464af; background: #241c3d; }
+button.ability:hover { border-color: #daabff; background: #38275a; }
+button.utility { margin-left: auto; color: #93b4bf; }
+button.utility + button.utility { margin-left: 0; }
+@media (max-width: 1140px) {
+  body { min-width: 0; display: block; overflow-x: auto; }
+  #app, .command-deck { margin-left: 20px; }
+}
