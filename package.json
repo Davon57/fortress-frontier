@@ -8,7 +8,12 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "lint": "eslint .",
+    "format": "prettier --write \"src/**/*.{ts,css}\" \"e2e/**/*.ts\" \"*.{json,js,ts,html}\" \".github/**/*.yml\"",
+    "format:check": "prettier --check \"src/**/*.{ts,css}\" \"e2e/**/*.ts\" \"*.{json,js,ts,html}\" \".github/**/*.yml\"",
+    "check": "npm run format:check && npm run lint && npm test && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +22,11 @@
     "pixi.js": "^8.20.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.29.7",
+    "@babel/preset-typescript": "^7.29.7",
+    "@playwright/test": "^1.62.1",
+    "eslint": "^9.39.5",
+    "prettier": "^3.9.6",
     "typescript": "^7.0.2",
     "vite": "^8.2.2",
     "vitest": "^4.1.11"

@@ -3,10 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>铁幕前线：军团塔防</title>
+    <title>堡垒前线：王国争夺</title>
   </head>
   <body>
-    <main id="app"></main>
+    <button
+      class="drawer-toggle drawer-toggle--left"
+      data-drawer="left"
+      aria-controls="mission-panel"
+      aria-expanded="false"
+    >
+      任务
+    </button>
+    <button
+      class="drawer-toggle drawer-toggle--right"
+      data-drawer="right"
+      aria-controls="campaign-panel"
+      aria-expanded="false"
+    >
+      战役
+    </button>
+    <div class="layout-backdrop" id="layout-backdrop" hidden></div>
+
+    <main class="game-shell" id="game-shell">
+      <aside class="side-panel side-panel--left" id="mission-panel" aria-label="任务与战场情报">
+        <header class="side-panel__header">
+          <span class="side-panel__title">作战简报</span>
+          <button
+            class="panel-collapse"
+            data-side="left"
+            aria-label="折叠作战简报"
+            aria-expanded="true"
+          >
+            ‹
+          </button>
+        </header>
+        <div class="side-panel__body" id="mission-content"></div>
+      </aside>
+
+      <section class="battle-column">
+        <header class="battle-header" id="battle-header"></header>
+        <div id="app"></div>
+        <section class="command-deck" id="command-deck" aria-label="战场操作台"></section>
+      </section>
+
+      <aside class="side-panel side-panel--right" id="campaign-panel" aria-label="敌情与战役进度">
+        <header class="side-panel__header">
+          <button
+            class="panel-collapse"
+            data-side="right"
+            aria-label="折叠战役面板"
+            aria-expanded="true"
+          >
+            ›
+          </button>
+          <span class="side-panel__title">战役指挥</span>
+        </header>
+        <div class="side-panel__body" id="campaign-content"></div>
+      </aside>
+    </main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

@@ -1,24 +1,337 @@
 :root {
+  --game-width: 1100px;
   color: #4c321e;
   background: #2c2118;
   font-family: Arial, "Microsoft YaHei", sans-serif;
 }
-* { box-sizing: border-box; }
-body { margin: 0; min-width: 1120px; min-height: 100vh; display: grid; place-items: center; background: radial-gradient(circle at 50% 18%, #725638, #2c2118 65%); }
-#app { width: 1100px; margin-top: 30px; border: 7px solid #513b28; box-shadow: 0 0 0 2px #c29d66, 0 22px 65px #000b; }
-canvas { display: block; width: 1100px; height: 620px; }
-.command-deck { width: 1100px; margin-bottom: 28px; padding: 13px 15px 16px; background: linear-gradient(90deg, #ddc294, #b9905d); border: 2px solid #513b28; border-top: 0; }
-.deck-title { margin-bottom: 10px; font-weight: 700; letter-spacing: .08em; color: #4c321e; }
-.deck-title span { margin-left: 14px; color: #765538; font-size: 12px; font-weight: 400; letter-spacing: 0; }
-.deck-row { display: flex; gap: 7px; flex-wrap: wrap; }
-button { appearance: none; padding: 9px 15px; border: 1px solid #543b27; border-radius: 3px; background: #765238; color: #fff0ce; cursor: pointer; font: 600 13px Arial, "Microsoft YaHei", sans-serif; transition: .12s ease; }
-button:hover, button.active { border-color: #fff0b8; background: #92633c; }
-button b { margin-left: 4px; color: #ffe19a; }
-button.ability { border-color: #8464af; background: #241c3d; }
-button.ability:hover { border-color: #daabff; background: #38275a; }
-button.utility { margin-left: auto; color: #93b4bf; }
-button.utility + button.utility { margin-left: 0; }
-@media (max-width: 1140px) {
-  body { min-width: 0; display: block; overflow-x: auto; }
-  #app, .command-deck { margin-left: 20px; }
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 30px 12px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 18%, #725638, #2c2118 65%);
+}
+#app {
+  width: min(var(--game-width), 100%);
+  border: 7px solid #513b28;
+  box-shadow:
+    0 0 0 2px #c29d66,
+    0 22px 65px #000b;
+}
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1100 / 620;
+  touch-action: none;
+}
+.command-deck {
+  width: min(var(--game-width), 100%);
+  padding: 13px 15px 16px;
+  background: linear-gradient(90deg, #ddc294, #b9905d);
+  border: 2px solid #513b28;
+  border-top: 0;
+}
+.deck-title {
+  margin-bottom: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #4c321e;
+}
+.deck-title span {
+  margin-left: 14px;
+  color: #765538;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.objective-panel {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(130px, 220px) auto;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
+  padding: 8px 10px;
+  color: #f8e8c5;
+  background: #493421;
+  border: 1px solid #2e2117;
+  box-shadow: inset 0 0 0 1px #a9804e55;
+}
+.objective-copy {
+  min-width: 0;
+}
+.objective-copy strong,
+.objective-copy span {
+  display: block;
+}
+.objective-copy strong {
+  font-size: 13px;
+}
+.objective-copy span {
+  margin-top: 3px;
+  overflow: hidden;
+  color: #d8bf91;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.objective-track {
+  height: 11px;
+  overflow: hidden;
+  background: #24180f;
+  border: 1px solid #8a6740;
+  border-radius: 8px;
+}
+.objective-track i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #d7a83d, #ffe18a);
+  transition: width 0.2s linear;
+}
+.objective-panel[data-state="contested"] .objective-track i {
+  background: linear-gradient(90deg, #bf4b2e, #ff9a52);
+}
+.objective-panel[data-state="complete"] .objective-track i {
+  background: linear-gradient(90deg, #3d8a55, #87d67c);
+}
+.objective-panel[data-state="failed"] .objective-track i {
+  background: #bf3d42;
+}
+.enemy-plan {
+  color: #f0ca78;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.challenge-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 9px;
+}
+.challenge {
+  min-width: 0;
+  padding: 6px 8px;
+  color: #62472d;
+  font-size: 11px;
+  background: #d7ba87;
+  border: 1px solid #9a7449;
+}
+.challenge b {
+  margin-right: 5px;
+  color: #9a6d24;
+}
+.challenge small {
+  display: block;
+  margin: 3px 0 0 18px;
+  overflow: hidden;
+  color: #806040;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.challenge[data-state="met"] {
+  color: #285536;
+  background: #b9cf9e;
+  border-color: #5e875f;
+}
+.challenge[data-state="met"] b {
+  color: #347243;
+}
+.challenge[data-state="failed"] {
+  color: #713638;
+  background: #d7a5a0;
+  border-color: #9b5655;
+}
+.challenge[data-state="failed"] b {
+  color: #a12f35;
+}
+.result-panel {
+  margin-bottom: 9px;
+  padding: 10px 12px;
+  color: #f8e8c5;
+  background: linear-gradient(120deg, #372719, #594126);
+  border: 2px solid #d0a552;
+  box-shadow:
+    inset 0 0 0 1px #ffe49a33,
+    0 5px 14px #2c211844;
+}
+.result-panel[hidden] {
+  display: none;
+}
+.result-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.result-heading strong {
+  font-size: 15px;
+}
+#result-stars {
+  color: #ffe17b;
+  font-size: 21px;
+  letter-spacing: 0.08em;
+}
+.result-stats {
+  margin-top: 7px;
+  color: #dec79b;
+  font-size: 11px;
+}
+.result-challenges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin-top: 8px;
+}
+.result-panel > small {
+  display: block;
+  margin-top: 7px;
+  color: #c8ad7f;
+}
+.battle-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 9px;
+  padding: 7px 8px;
+  background: #caa673;
+  border: 1px solid #8b6745;
+}
+.battle-tip {
+  margin-right: auto;
+  font-size: 13px;
+}
+.ratio-label {
+  flex: 0 0 auto;
+  font-size: 12px;
+  color: #543b27;
+}
+.ratio-label b {
+  font-size: 13px;
+  color: #3a271b;
+}
+.battle-controls .ratio {
+  padding: 6px 9px;
+}
+.battle-controls button {
+  padding: 6px 12px;
+}
+.deck-row {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+button {
+  appearance: none;
+  padding: 9px 15px;
+  border: 1px solid #543b27;
+  border-radius: 3px;
+  background: #765238;
+  color: #fff0ce;
+  cursor: pointer;
+  font:
+    600 13px Arial,
+    "Microsoft YaHei",
+    sans-serif;
+  transition: 0.12s ease;
+}
+button:hover,
+button.active {
+  border-color: #fff0b8;
+  background: #92633c;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+button b {
+  margin-left: 4px;
+  color: #ffe19a;
+}
+.ability-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 9px;
+}
+button.ability {
+  border-color: #8464af;
+  background: #241c3d;
+}
+button.ability:hover:not(:disabled) {
+  border-color: #daabff;
+  background: #38275a;
+}
+button.ability.armed {
+  border-color: #ffe9a8;
+  background: #5b3f8f;
+  box-shadow: 0 0 0 2px #ffe9a866;
+}
+button.ability b {
+  margin-left: 6px;
+  color: #d9b8ff;
+  font-variant-numeric: tabular-nums;
+}
+.legend {
+  margin-left: auto;
+  color: #5f4429;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+@media (max-width: 640px) {
+  body {
+    padding: 12px 6px 18px;
+    justify-content: flex-start;
+  }
+  #app {
+    border-width: 3px;
+  }
+  .command-deck {
+    padding: 10px 8px 12px;
+  }
+  .deck-title {
+    font-size: 14px;
+  }
+  .deck-title span {
+    display: block;
+    margin: 5px 0 0;
+  }
+  .battle-controls {
+    flex-wrap: wrap;
+  }
+  .battle-tip {
+    flex: 1 0 100%;
+  }
+  .objective-panel {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .challenge-row,
+  .result-challenges {
+    grid-template-columns: 1fr;
+  }
+  .enemy-plan {
+    white-space: normal;
+  }
+  .ability-row {
+    flex-wrap: wrap;
+  }
+  .legend {
+    flex: 1 0 100%;
+    margin: 3px 0 0;
+  }
+  .deck-row {
+    gap: 5px;
+  }
+  button {
+    flex: 1 1 auto;
+    padding: 8px 9px;
+    font-size: 12px;
+  }
 }
