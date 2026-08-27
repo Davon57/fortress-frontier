@@ -690,7 +690,30 @@ button.level.active {
 }
 
 .command-deck--legion {
-  grid-template-columns: minmax(220px, 0.9fr) minmax(300px, 1.2fr) minmax(155px, 0.6fr);
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.resource-grid span {
+  padding: 5px 3px;
+  color: #cdb58a;
+  font-size: 9px;
+  text-align: center;
+  background: #21170f88;
+  border: 1px solid #76583a;
+}
+
+.resource-grid b {
+  display: block;
+  margin-top: 2px;
+  color: #f3d680;
+  font-size: 14px;
 }
 
 .drawer-toggle {

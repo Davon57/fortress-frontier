@@ -20,9 +20,12 @@ import "./style.css";
 import "./layout.css";
 
 const requestedMode = new URLSearchParams(location.search).get("mode");
-if (requestedMode === "legion") {
-  const { mountLegionGame } = await import("./game/legion-app");
-  await mountLegionGame();
+if (!requestedMode) {
+  const { mountHome } = await import("./home");
+  mountHome();
+} else if (requestedMode === "manor") {
+  const { mountManorGame } = await import("./game/manor-app");
+  await mountManorGame();
 } else {
   const selectedLevel = Number(new URLSearchParams(location.search).get("level") || "1");
   const level = getLevel(selectedLevel);
@@ -77,10 +80,7 @@ if (requestedMode === "legion") {
     <p>${level.briefing}</p>
   </div>
   <div class="battle-header__tools">
-    <nav class="mode-switch" aria-label="玩法模式">
-      <a class="active" href="?level=${level.id}">经典</a>
-      <a href="?mode=legion">军团</a>
-    </nav>
+    <a class="mode-home-link" href="/">返回游戏首页</a>
     <div class="terrain-strip" title="${terrain.description}">
       <span><b>产兵</b> ×${terrain.production}</span>
       <span><b>野战</b> ×${terrain.combat}</span>

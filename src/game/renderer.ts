@@ -606,7 +606,6 @@ export class GameRenderer {
         .circle(badgeX, badgeY, 6)
         .fill(UNIT_COLORS[fort.specialization]);
     }
-
     this.actors
       .circle(x, y, style.radius)
       .fill(0x5b4937)
